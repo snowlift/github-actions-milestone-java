@@ -36,4 +36,5 @@ jobs:
             }
 
             // Sets the milestone to PR
+            console.log(githubMilestone.number)
             await github.issues.update({ owner: context.repo.owner, repo: context.repo.repo, milestone: githubMilestone.number, issue_number: context.issue.number })
