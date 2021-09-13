@@ -1,3 +1,5 @@
+name: milestone
+
 on:
   pull_request:
     branches: [master]
