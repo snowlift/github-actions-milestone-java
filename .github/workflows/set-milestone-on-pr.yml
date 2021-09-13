@@ -8,39 +8,32 @@ on:
 jobs:
   set-milestone:
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Compute milestone
+
+      - name: Get milestone from pom.xml
         run: |
           echo "MILESTONE_NUMBER=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | cut -d- -f1)" >> $GITHUB_ENV
-      - name: Set milestone
+
+      - name: Set milestone to PR
         uses: actions/github-script@v3
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             // Get milestone
             const milestone = process.env.MILESTONE_NUMBER
-            console.log(`Using milestone with name ${milestone}`)
 
-            // Check if milestone exists
-            const issuesGetMilestonesParams = context.repo
-
-            // Search if milestone is already defined
-            const response = await github.issues.listMilestones(issuesGetMilestonesParams)
+            // Find a milestone
+            const response = await github.issues.listMilestones(context.repo)
             let githubMilestone = response.data.find(milestoneResponse => milestoneResponse.title === milestone)
 
-            // Create if doesn't exist
+            // Create new milestone if it doesn't exist
             if (!githubMilestone) {
-              const issuesCreateMilestoneParams = { owner: context.repo.owner, repo:context.repo.repo, title: milestone }
-              const createMilestoneResponse = await github.issues.createMilestone(issuesCreateMilestoneParams)
+              const createMilestoneResponse = await github.issues.createMilestone({ owner: context.repo.owner, repo:context.repo.repo, title: milestone })
               githubMilestone = createMilestoneResponse.data
             }
 
-            // Grab the milestone number
-            const milestoneNumber = githubMilestone.number
-
-            // Sets the milestone from the number
-            const issuesUpdateParams = { owner: context.repo.owner, repo: context.repo.repo, milestone: milestoneNumber, issue_number: context.issue.number }
-            await github.issues.update(issuesUpdateParams)
+            // Sets the milestone to PR
+            await github.issues.update({ owner: context.repo.owner, repo: context.repo.repo, milestone: githubMilestone.number, issue_number: context.issue.number })
