@@ -23,18 +23,17 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             // Get milestone
-            const milestone = process.env.MILESTONE_NUMBER
+            const {MILESTONE_NUMBER} = process.env
 
-            // Find a milestone
+            // Find milestone
             const response = await github.issues.listMilestones(context.repo)
-            let githubMilestone = response.data.find(milestoneResponse => milestoneResponse.title === milestone)
+            let milestone = response.data.find(milestoneResponse => milestoneResponse.title === MILESTONE_NUMBER)
 
             // Create new milestone if it doesn't exist
-            if (!githubMilestone) {
-              const createMilestoneResponse = await github.issues.createMilestone({ owner: context.repo.owner, repo:context.repo.repo, title: milestone })
-              githubMilestone = createMilestoneResponse.data
+            if (!milestone) {
+              const create_response = await github.issues.createMilestone({ owner: context.repo.owner, repo:context.repo.repo, title: MILESTONE_NUMBER })
+              milestone = create_response.data
             }
 
-            // Sets the milestone to PR
-            console.log(githubMilestone.number)
-            await github.issues.update({ owner: context.repo.owner, repo: context.repo.repo, milestone: githubMilestone.number, issue_number: context.issue.number })
+            // Set milestone to PR
+            await github.issues.update({ owner: context.repo.owner, repo: context.repo.repo, milestone: milestone.number, issue_number: context.issue.number })
