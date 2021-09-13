@@ -23,7 +23,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             // Get milestone
-            const {MILESTONE_NUMBER} = process.env
+            const MILESTONE_NUMBER = process.env
 
             // Find milestone
             const response = await github.issues.listMilestones(context.repo)
