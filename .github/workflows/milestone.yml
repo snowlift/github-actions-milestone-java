@@ -12,11 +12,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: Get milestone from pom.xml
         run: |
           echo "MILESTONE_NUMBER=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | cut -d- -f1)" >> $GITHUB_ENV
-
       - name: Set milestone to PR
         uses: actions/github-script@v3
         with:
