@@ -1,3 +1,3 @@
 # github-actions-playground
 
-This is test.
+This is test2.
