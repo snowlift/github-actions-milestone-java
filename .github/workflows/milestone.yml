@@ -9,9 +9,7 @@ jobs:
   set-milestone:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    permissions:
-      actions: write
-      pull-requests: write
+    permissions: write-all
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
