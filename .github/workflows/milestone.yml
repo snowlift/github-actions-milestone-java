@@ -29,7 +29,6 @@ jobs:
               console.log(pr_response.data)
               throw 'Expect 1 pull request but found: ' + pr_response.data.length
             }
-            throw 'Expect 1 pull request but found: ' + pr_response.data.length
 
             // Get milestone
             const { MILESTONE_NUMBER } = process.env
