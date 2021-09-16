@@ -6,9 +6,7 @@ on:
 
 jobs:
   set-milestone:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    permissions: write-all
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -21,6 +19,10 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+            // Get pull request number from commit sha
+            const response1 = await github.repos.listPullRequestsAssociatedWithCommit({ owner: context.repo.owner, repo:context.repo.repo, commit_sha: context.sha })
+            const pr_number = response1.data[0].number
+
             // Get milestone
             const { MILESTONE_NUMBER } = process.env
 
@@ -35,4 +37,4 @@ jobs:
             }
 
             // Set milestone to PR
-            await github.issues.update({ owner: context.repo.owner, repo: context.repo.repo, milestone: milestone.number, issue_number: context.issue.number })
+            await github.issues.update({ owner: context.repo.owner, repo: context.repo.repo, milestone: milestone.number, issue_number: pr_number })
