@@ -14,15 +14,8 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            const pull_requests = await github.repos.listPullRequestsAssociatedWithCommit({ owner: context.repo.owner, repo:context.repo.repo, commit_sha: context.sha })
-            console.log(pull_requests.data)
-            console.log(pull_requests.data.length)
-            console.log(pull_requests.data[0])
-            console.log(pull_requests.data[0].number)
-            if (pull_requests.data.length != 1) {
-              console.log("Expect 1 pull request but found: " + pull_requests.data)
-              exit 0
-            }
-
-            pull_number = pull_requests.data[0].number
-            console.log(pull_number)
+            console.log(context.sha)
+            const response = await github.repos.listPullRequestsAssociatedWithCommit({ owner: context.repo.owner, repo:context.repo.repo, commit_sha: context.sha })
+            console.log(response.data)
+            console.log(response.data[0])
+            console.log(response.data[0].number)
