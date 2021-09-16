@@ -15,5 +15,5 @@ jobs:
         with:
           script: |
             console.log(context)
-            const response = await github.issues.listPullRequestsAssociatedWithCommit(context.d1c7ad68c4e63b4d8ed7085c91164ad5518843b5)
+            const response = await github.repos.listPullRequestsAssociatedWithCommit(context.d1c7ad68c4e63b4d8ed7085c91164ad5518843b5)
             console.log(response.data)
