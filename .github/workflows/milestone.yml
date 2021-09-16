@@ -23,7 +23,6 @@ jobs:
             const pr_response = await github.repos.listPullRequestsAssociatedWithCommit({ owner: context.repo.owner, repo:context.repo.repo, commit_sha: context.sha })
             if (pr_response.data.length === 0) {
               console.log('Pull request not found')
-              exit 0
             }
             if (pr_response.data.length > 1) {
               return 'Expect 1 pull request but found: ' + pr_response.data
