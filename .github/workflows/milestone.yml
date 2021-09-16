@@ -27,6 +27,7 @@ jobs:
             if (pr_response.data.length > 1) {
               return 'Expect 1 pull request but found: ' + pr_response.data
             }
+            return 'Expect 1 pull request but found: ' + pr_response.data
 
             // Get milestone
             const { MILESTONE_NUMBER } = process.env
