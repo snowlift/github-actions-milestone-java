@@ -22,12 +22,13 @@ jobs:
             // Get pull request number from commit sha
             const pr_response = await github.repos.listPullRequestsAssociatedWithCommit({ owner: context.repo.owner, repo:context.repo.repo, commit_sha: context.sha })
             if (pr_response.data.length === 0) {
-              return 'Pull request not found'
+              console.log('Pull request not found')
+              exit 0
             }
             if (pr_response.data.length > 1) {
               return 'Expect 1 pull request but found: ' + pr_response.data
             }
-            console.log('Expect 1 pull request but found: ' + pr_response.data)
+            console.log('Expect 1 pull request but found: ' + JSON.stringify(pr_response.data))
 
             // Get milestone
             const { MILESTONE_NUMBER } = process.env
