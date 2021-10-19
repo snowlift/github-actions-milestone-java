@@ -38,7 +38,7 @@ jobs:
 
             // Create new milestone if it doesn't exist
             if (!milestone) {
-              const create_response = await github.issues.createMilestone({ owner: context.repo.owner, repo:context.repo.repo, title: MILESTONE_NUMBER })
+              const create_response = await github.issues.createMilestone({ owner: context.repo.owner, repo:context.repo.repo, title: MILESTONE_NUMBER, state: 'closed' })
               milestone = create_response.data
             }
 
